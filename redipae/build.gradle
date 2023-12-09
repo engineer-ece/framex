@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'maven-publish'
+
 }
 
 android {
@@ -20,6 +21,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    configurations {
+        release
+    }
+
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -37,15 +42,25 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 }
 
-afterEvaluate {
-    publishing{
-        publications{
-            release(MavenPublication){
-                //from components.release
-                groupId = 'com.github.engineer-ece'
-                artifactId = 'redipae-test'
-                version = '1.0'
-            }
+
+publishing {
+    publications {
+        aar(MavenPublication) {
+            groupId = 'com.github.engineer-ece'
+            artifactId = 'redipae-test'
+            version = '1.0'
+
+            //from components.release
+
+            // Optionally, include additional artifacts (e.g., sources, javadoc)
+            //artifact sourceJar
+            //artifact javadocJar
+        }
+    }
+
+    repositories {
+        maven {
+            url = uri('https://github.com/engineer-ece/framex')
         }
     }
 }
